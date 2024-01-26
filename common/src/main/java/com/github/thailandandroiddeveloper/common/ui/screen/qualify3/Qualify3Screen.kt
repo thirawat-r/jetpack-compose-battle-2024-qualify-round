@@ -2,40 +2,36 @@ package com.github.thailandandroiddeveloper.common.ui.screen.qualify3
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.AssistChip
+import androidx.compose.material3.AssistChipDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -54,12 +50,11 @@ fun Qualify3Screen() {
     Scaffold(
         topBar = {
             TopAppBar(
-                colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = MaterialTheme.colorScheme.primaryContainer,
-                    titleContentColor = MaterialTheme.colorScheme.onPrimaryContainer,
-                ),
                 navigationIcon = {
-                    IconButton(onClick = { /*TODO*/ }) {
+                    IconButton(
+                        onClick = { /*TODO*/ },
+                        modifier = Modifier.size(48.dp)
+                    ) {
                         Icon(
                             painter = painterResource(id = R.drawable.ic_qualify_3_back),
                             contentDescription = null
@@ -74,10 +69,16 @@ fun Qualify3Screen() {
                 },
                 actions = {
                     ActionButtons()
-
-                }
+                },
+                colors = TopAppBarDefaults.topAppBarColors(
+                    containerColor = MaterialTheme.colorScheme.primaryContainer,
+                    navigationIconContentColor = MaterialTheme.colorScheme.onPrimaryContainer,
+                    actionIconContentColor = MaterialTheme.colorScheme.onPrimaryContainer,
+                    titleContentColor = MaterialTheme.colorScheme.onPrimaryContainer
+                ),
             )
         },
+        containerColor = Color.White,
         content = { paddingValues ->
             MainContent(
                 modifier = Modifier
@@ -89,19 +90,28 @@ fun Qualify3Screen() {
 
 @Composable
 fun ActionButtons() {
-    IconButton(onClick = { /*TODO*/ }) {
+    IconButton(
+        onClick = { /*TODO*/ },
+        modifier = Modifier.size(48.dp)
+    ) {
         Icon(
             painter = painterResource(id = R.drawable.ic_qualify_3_copy),
-            contentDescription = null
+            contentDescription = null,
         )
     }
-    IconButton(onClick = { /*TODO*/ }) {
+    IconButton(
+        onClick = { /*TODO*/ },
+        modifier = Modifier.size(48.dp)
+    ) {
         Icon(
             painter = painterResource(id = R.drawable.ic_qualify_3_calendar),
             contentDescription = null
         )
     }
-    IconButton(onClick = { /*TODO*/ }) {
+    IconButton(
+        onClick = { /*TODO*/ },
+        modifier = Modifier.size(48.dp)
+    ) {
         Icon(
             painter = painterResource(id = R.drawable.ic_qualify_3_menu),
             contentDescription = null
@@ -125,25 +135,37 @@ fun MainContent(
 
 @Composable
 fun PhotoList() {
+
+    val photoList = remember {
+        listOf(
+            R.drawable.img_qualify_3_photo_1,
+            R.drawable.img_qualify_3_photo_2,
+            R.drawable.img_qualify_3_photo_3,
+        )
+    }
+
     LazyRow(
+        modifier = Modifier.padding(top = 16.dp),
         contentPadding = PaddingValues(
             horizontal = 16.dp
         ),
         horizontalArrangement = Arrangement.spacedBy(16.dp),
-        modifier = Modifier.padding(top = 16.dp)
     ) {
-        items(photoList) { photoData ->
-            Card(
-                modifier = Modifier.size(width = 160.dp, height = 320.dp),
-                shape = RoundedCornerShape(16.dp),
-                border = BorderStroke(width = 2.dp, color = MaterialTheme.colorScheme.primary)
-            ) {
-                Image(
-                    painter = painterResource(id = photoData.imageRes),
-                    contentDescription = null,
-                    modifier = Modifier.size(width = 160.dp, height = 320.dp)
-                )
-            }
+        itemsIndexed(photoList) { index, item ->
+            val colorBorder =
+                if (index == 0) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.primaryContainer
+
+            Image(
+                painter = painterResource(id = item),
+                contentDescription = null,
+                modifier = Modifier
+                    .size(width = 160.dp, height = 320.dp)
+                    .border(
+                        BorderStroke(width = 2.dp, color = colorBorder),
+                        RoundedCornerShape(16.dp)
+                    )
+                    .clip(RoundedCornerShape(16.dp))
+            )
         }
     }
 }
@@ -152,31 +174,42 @@ fun PhotoList() {
 fun TagList(
     modifier: Modifier = Modifier
 ) {
+
+    val tagList = remember {
+        listOf(
+            "Tag 1",
+            "Tag 2",
+            "Tag 3",
+            "Tag 4",
+        )
+    }
+
     LazyRow(
         modifier = modifier.padding(horizontal = 16.dp),
         horizontalArrangement = Arrangement.spacedBy(8.dp),
-        verticalAlignment = Alignment.CenterVertically
+        verticalAlignment = Alignment.CenterVertically,
     ) {
-        itemsIndexed(tagList) { index: Int, item: TagData ->
-            val color =
+        itemsIndexed(tagList) { index, item ->
+            val chipColor =
                 if (index == 0) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.outline
-
-            OutlinedButton(
+            AssistChip(
                 onClick = { /*TODO*/ },
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = Color.Transparent
+                label = {
+                    Text(
+                        text = item,
+                        style = MaterialTheme.typography.labelLarge,
+                    )
+                },
+                colors = AssistChipDefaults.assistChipColors(
+                    labelColor = chipColor,
                 ),
-                border = BorderStroke(width = 1.dp, color = color),
-                shape = RoundedCornerShape(8.dp),
-                contentPadding = PaddingValues(vertical = 6.dp, horizontal = 16.dp),
-                modifier = Modifier.size(width = 68.dp, height = 32.dp)
-            ) {
-                Text(
-                    text = item.name,
-                    style = MaterialTheme.typography.labelLarge,
-                    color = color,
-                )
-            }
+                border = AssistChipDefaults.assistChipBorder(
+                    borderColor = chipColor
+                ),
+                modifier = Modifier
+                    .width(68.dp)
+                    .height(32.dp),
+            )
         }
     }
 }
@@ -185,27 +218,38 @@ fun TagList(
 fun MessageList(
     modifier: Modifier = Modifier
 ) {
+
+    val messageList = remember {
+        listOf(
+            "Duis dignissim pulvinar lectus imperdiet tempus. Curabitur fringilla commodo consectetur. Sed congue blandit nibh.",
+            "Morbi sed sagittis justo, at pulvinar ipsum. Praesent massa metus, interdum at suscipit a, interdum vel orci. Pellentesque in sapien. Integer faucibus mauris ac luctus aliquam accumsan.",
+            "Duis dignissim pulvinar lectus imperdiet tempus. Curabitur fringilla commodo.",
+            "Ut hendrerit neque nec accumsan hendrerit. Fusce lobortis rhoncus erat, a blandit nibh molestie vel. Cras commodo ligula ex, vitae venenatis lacus facilisis eget."
+        )
+    }
+
     LazyColumn(
-        modifier = modifier.padding(horizontal = 16.dp),
+        modifier = modifier
+            .padding(horizontal = 16.dp),
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
-        items(messageList) { messageData ->
+        items(messageList) { item ->
             Card(
                 colors = CardDefaults.cardColors(
                     containerColor = MaterialTheme.colorScheme.surface,
                 ),
-                shape = RoundedCornerShape(16.dp),
                 border = BorderStroke(
                     width = 1.dp,
                     color = MaterialTheme.colorScheme.surfaceVariant
                 ),
+                shape = RoundedCornerShape(16.dp),
             ) {
                 Row(
                     modifier = Modifier.padding(16.dp),
                     horizontalArrangement = Arrangement.spacedBy(8.dp),
                 ) {
                     Image(
-                        painter = painterResource(id = messageData.senderProfileImageRes),
+                        painter = painterResource(id = R.drawable.img_qualify_3_sender),
                         contentDescription = null,
                         modifier = Modifier
                             .clip(CircleShape)
@@ -213,16 +257,18 @@ fun MessageList(
                     )
                     Column {
                         Text(
-                            text = messageData.senderName,
+                            text = "Lorem Ipsum",
                             style = MaterialTheme.typography.titleMedium,
-                            color = MaterialTheme.colorScheme.onSurface
+                            color = MaterialTheme.colorScheme.onSurface,
+                            modifier = Modifier.height(24.dp)
                         )
                         Text(
-                            text = messageData.message,
+                            text = item,
                             style = MaterialTheme.typography.bodyMedium,
                             color = MaterialTheme.colorScheme.onSurfaceVariant,
                             maxLines = 2,
-                            overflow = TextOverflow.Ellipsis
+                            overflow = TextOverflow.Ellipsis,
+                            modifier = Modifier.height(40.dp)
                         )
                     }
                 }

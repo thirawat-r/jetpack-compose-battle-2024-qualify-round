@@ -1,7 +1,5 @@
 package com.github.thailandandroiddeveloper.common.ui.screen.qualify2
 
-import androidx.compose.foundation.Canvas
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -15,20 +13,15 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentHeight
-import androidx.compose.foundation.pager.HorizontalPager
-import androidx.compose.foundation.pager.PagerState
-import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -42,52 +35,51 @@ import com.github.thailandandroiddeveloper.common.R
 import com.github.thailandandroiddeveloper.common.ui.preview.Pixel7
 import com.github.thailandandroiddeveloper.common.ui.theme.AppTheme
 
-@OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun Qualify2Screen() {
-
-    val pagerState = rememberPagerState(pageCount = {
-        5
-    })
 
     Scaffold(
         topBar = {
             TopAppBar(
                 title = { /*TODO*/ },
                 actions = {
-                    TextButton(onClick = { /*TODO*/ }) {
+                    TextButton(
+                        onClick = { /*TODO*/ },
+                    ) {
                         Text(
                             text = "Skip",
                             style = MaterialTheme.typography.labelLarge,
                             color = MaterialTheme.colorScheme.primary,
                         )
                     }
-                }
+                },
+                colors = TopAppBarDefaults.topAppBarColors(
+                    containerColor = Color.White,
+                    actionIconContentColor = MaterialTheme.colorScheme.onPrimaryContainer
+                ),
             )
-
         },
         bottomBar = {
             BottomBar()
         },
+        containerColor = Color.White,
         content = { paddingValues ->
             MainContent(
-                modifier = Modifier.padding(paddingValues),
-                pagerState = pagerState
+                modifier = Modifier
+                    .padding(paddingValues)
+                    .fillMaxSize(),
             )
         }
     )
 }
 
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun MainContent(
-    modifier: Modifier = Modifier,
-    pagerState: PagerState
+    modifier: Modifier = Modifier
 ) {
     Column(
-        modifier = modifier
-            .padding(horizontal = 32.dp),
-        verticalArrangement = Arrangement.Center,
+        modifier = modifier,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Text(
@@ -97,26 +89,27 @@ fun MainContent(
         )
         Spacer(modifier = Modifier.height(16.dp))
         Text(
-            text = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec egestas dictum lacinia. Integer arcu neque, porttitor ac metus quis, iaculis molestie magna. Vivamus molestie justo sed nulla lacinia, quis fringilla lorem imperdiet. Proin in quam vel odio iaculis fringilla",
+            text = "Lorem ipsum dolor sit amet, consectetur adipiscing\nelit. Donec egestas dictum lacinia. Integer arcu\nneque, porttitor ac metus quis, iaculis molestie\nmagna. Vivamus molestie justo sed nulla lacinia,\nquis fringilla lorem imperdiet. Proin in quam vel odio\niaculis fringilla",
             style = MaterialTheme.typography.bodyMedium,
             color = MaterialTheme.colorScheme.onSurface,
             textAlign = TextAlign.Center
         )
-        Spacer(modifier = Modifier.height(32.dp))
+        Spacer(modifier = Modifier.height(36.dp))
         Image(
             painter = painterResource(id = R.drawable.img_qualify_2_onboard),
-            contentDescription = null
+            contentDescription = null,
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(446.dp),
         )
-        Spacer(modifier = Modifier.height(32.dp))
-        PagerIndicator(pagerState = pagerState)
+        Spacer(modifier = Modifier.height(34.dp))
+        PagerIndicator()
     }
 }
 
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun PagerIndicator(
-    modifier: Modifier = Modifier,
-    pagerState: PagerState
+    modifier: Modifier = Modifier
 ) {
     Row(
         modifier = modifier
@@ -124,7 +117,7 @@ fun PagerIndicator(
         horizontalArrangement = Arrangement.spacedBy(8.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
-        repeat(pagerState.pageCount) { iteration ->
+        repeat(5) { iteration ->
             val color =
                 if (iteration == 3) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.primaryContainer
             val width = if (iteration == 3) 32.dp else 16.dp
@@ -145,12 +138,14 @@ fun BottomBar(
     Box(
         modifier = modifier
             .background(MaterialTheme.colorScheme.primaryContainer)
-            .padding(vertical = 31.dp, horizontal = 80.dp)
+            .height(102.dp)
     ) {
         Button(
             onClick = { /*TODO*/ },
             modifier = Modifier
                 .fillMaxWidth()
+                .padding(horizontal = 80.dp)
+                .align(Alignment.Center),
         ) {
             Text(
                 text = "Next",

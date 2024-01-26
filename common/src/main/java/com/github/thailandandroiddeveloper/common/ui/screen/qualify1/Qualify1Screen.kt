@@ -4,19 +4,18 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -28,11 +27,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.layout.layout
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import com.github.thailandandroiddeveloper.common.R
 import com.github.thailandandroiddeveloper.common.ui.preview.Pixel7
@@ -44,40 +40,41 @@ fun Qualify1Screen() {
     Scaffold(
         topBar = {
             TopAppBar(
-                colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = MaterialTheme.colorScheme.primaryContainer,
-                    titleContentColor = MaterialTheme.colorScheme.primary,
-                ),
                 title = {},
                 navigationIcon = {
-                    IconButton(onClick = { /*TODO*/ }) {
-                        Icon(
-                            painter = painterResource(id = R.drawable.ic_qualify_1_menu),
-                            contentDescription = null
-                        )
-                    }
+                    Icon(
+                        painter = painterResource(id = R.drawable.ic_qualify_1_menu),
+                        contentDescription = null,
+                    )
                 },
                 actions = {
-                    IconButton(onClick = { /*TODO*/ }) {
-                        Icon(
-                            painter = painterResource(id = R.drawable.ic_qualify_1_profile),
-                            contentDescription = null
-                        )
-                    }
-                }
+                    Icon(
+                        painter = painterResource(id = R.drawable.ic_qualify_1_profile),
+                        contentDescription = null
+                    )
+                },
+                colors = TopAppBarDefaults.topAppBarColors(
+                    containerColor = MaterialTheme.colorScheme.primaryContainer,
+                    navigationIconContentColor = MaterialTheme.colorScheme.onPrimaryContainer,
+                    actionIconContentColor = MaterialTheme.colorScheme.onPrimaryContainer
+                ),
             )
         },
+        containerColor = Color.White,
         content = { paddingValues ->
             Box(
                 modifier = Modifier
+                    .fillMaxSize()
                     .padding(paddingValues)
                     .padding(horizontal = 16.dp)
             ) {
-                MainContent()
+                MainContent(
+                    modifier = Modifier.fillMaxSize()
+                )
                 ThumbButtons(
                     modifier = Modifier
+                        .fillMaxWidth()
                         .align(Alignment.BottomCenter)
-                        .padding(bottom = 48.dp)
                 )
             }
         }
@@ -90,13 +87,13 @@ fun MainContent(
 ) {
     Box(
         modifier = modifier
-            .fillMaxSize()
             .padding(top = 16.dp, bottom = 72.dp)
             .clip(shape = RoundedCornerShape(16.dp))
     ) {
         Image(
             painter = painterResource(id = R.drawable.img_qualify_1_profile),
             contentDescription = null,
+            modifier = Modifier.matchParentSize()
         )
         Description(
             modifier = Modifier.align(Alignment.BottomCenter)
@@ -109,18 +106,18 @@ fun Description(modifier: Modifier = Modifier) {
     Column(
         modifier = modifier
             .alpha(0.75F)
-            .background(color = MaterialTheme.colorScheme.primary)
-            .padding(start = 20.dp, end = 20.dp, top = 20.dp, bottom = 40.dp),
-        verticalArrangement = Arrangement.spacedBy(10.dp)
+            .background(color = MaterialTheme.colorScheme.primary),
     ) {
         Text(
             text = "John Doe",
             style = MaterialTheme.typography.headlineMedium,
-            color = MaterialTheme.colorScheme.onPrimary
+            color = MaterialTheme.colorScheme.onPrimary,
+            modifier = Modifier.padding(top = 20.dp, start = 20.dp)
         )
         Row(
             horizontalArrangement = Arrangement.spacedBy(8.dp),
-            verticalAlignment = Alignment.CenterVertically
+            verticalAlignment = Alignment.CenterVertically,
+            modifier = Modifier.padding(top = 8.dp, start = 20.dp)
         ) {
             Image(
                 painter = painterResource(id = R.drawable.ic_qualify_1_gender_male),
@@ -135,7 +132,8 @@ fun Description(modifier: Modifier = Modifier) {
         Text(
             text = "Lorem ipsum dolor sit amet, cd nulla lacinia, quis fringilla lorem imperdiet. Proin in quam vel odio iaculis fringilla.",
             style = MaterialTheme.typography.bodyMedium,
-            color = MaterialTheme.colorScheme.onPrimary
+            color = MaterialTheme.colorScheme.onPrimary,
+            modifier = Modifier.padding(top = 8.dp, start = 20.dp, end = 19.dp, bottom = 40.dp)
         )
     }
 }
@@ -143,33 +141,39 @@ fun Description(modifier: Modifier = Modifier) {
 @Composable
 fun ThumbButtons(modifier: Modifier = Modifier) {
     Row(
-        modifier = modifier
-            .fillMaxWidth()
-            .padding(horizontal = 16.dp),
+        modifier = modifier.padding(bottom = 48.dp),
         horizontalArrangement = Arrangement.SpaceEvenly,
     ) {
-        IconButton(
+        Button(
             onClick = { /*TODO*/ },
-            modifier = Modifier
-                .clip(RoundedCornerShape(100.dp))
-                .background(MaterialTheme.colorScheme.errorContainer)
-                .size(width = 120.dp, height = 48.dp)
+            modifier = Modifier,
+            colors = ButtonDefaults.buttonColors(
+                containerColor = MaterialTheme.colorScheme.errorContainer,
+                contentColor = MaterialTheme.colorScheme.onErrorContainer
+            ),
+            shape = RoundedCornerShape(100.dp),
+            contentPadding = PaddingValues(vertical = 12.dp, horizontal = 48.dp)
         ) {
             Icon(
                 painter = painterResource(id = R.drawable.ic_qualify_1_thumb_down),
-                contentDescription = null
+                contentDescription = null,
+                modifier = Modifier.size(24.dp)
             )
         }
-        IconButton(
+        Button(
             onClick = { /*TODO*/ },
-            modifier = Modifier
-                .size(width = 120.dp, height = 48.dp)
-                .clip(RoundedCornerShape(100.dp))
-                .background(MaterialTheme.colorScheme.primaryContainer)
+            modifier = Modifier,
+            colors = ButtonDefaults.buttonColors(
+                containerColor = MaterialTheme.colorScheme.primaryContainer,
+                contentColor = MaterialTheme.colorScheme.onPrimaryContainer
+            ),
+            shape = RoundedCornerShape(100.dp),
+            contentPadding = PaddingValues(vertical = 12.dp, horizontal = 48.dp)
         ) {
             Icon(
                 painter = painterResource(id = R.drawable.ic_qualify_1_thumb_up),
-                contentDescription = null
+                contentDescription = null,
+                modifier = Modifier.size(24.dp)
             )
         }
     }
